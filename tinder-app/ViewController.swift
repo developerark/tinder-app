@@ -9,38 +9,30 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    let topStackView = TopNavigationStackView()
+    let blueView = UIView()
+    let  buttonsStackView = HomeBottomControllStackView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let subviews = [UIColor.gray, UIColor.darkGray, UIColor.black].map { (color) -> UIView in
-            let v = UIView()
-            v.backgroundColor = color
-            return v
-        }
-        
-        let topStackView = UIStackView(arrangedSubviews: subviews)
-        topStackView.distribution = .fillEqually
-        topStackView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        let blueView = UIView()
-        blueView.backgroundColor = .blue
-        
-        let yellowView = UIView()
-        yellowView.backgroundColor = .yellow
-        yellowView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        
-        let stackView = UIStackView(arrangedSubviews: [topStackView, blueView, yellowView])
-        stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.view.addSubview(stackView)
-        stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        stackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.view.backgroundColor = .white
+            blueView.backgroundColor = .blue
+
+        self.setupLayout()
     }
 
-
+    // MARK:- Layout Setup
+    fileprivate func setupLayout() {
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, blueView, buttonsStackView])
+        overallStackView.axis = .vertical
+        overallStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.addSubview(overallStackView)
+        overallStackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        overallStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        overallStackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        overallStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    }
 }
 
