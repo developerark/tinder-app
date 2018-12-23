@@ -10,6 +10,10 @@ import UIKit
 
 class CardView: UIView {
     fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "lady5c"))
+    
+    // MARK:- Configuration
+    fileprivate let threshold: CGFloat = 100
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         // Custom Drawing code
@@ -27,17 +31,44 @@ class CardView: UIView {
         self.addGestureRecognizer(panGesture)
     }
     
-    fileprivate func handleEnded() {
+
+    enum DismissDirection{
+        case right
+        case left
+    }
+    fileprivate func handleEnded(gesture: UIPanGestureRecognizer) {
+        let shouldDismissCard = abs(gesture.translation(in: nil).x) > threshold
+        var dismissDirection: DismissDirection = .right
+        if shouldDismissCard{
+            if gesture.translation(in: nil).x > 0{
+                dismissDirection = .right
+            }else{
+                dismissDirection = .left
+            }
+        }
+        
+        
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
-            self.transform = .identity
+            if shouldDismissCard{
+                if dismissDirection == .right{
+                    self.frame = CGRect(x: 1000, y: 0, width: self.frame.width, height: self.frame.height)
+                }else{
+                    self.frame = CGRect(x: -1000, y: 0, width: self.frame.width, height: self.frame.height)
+                }
+            }else{
+                self.transform = .identity
+            }
         }) { (_) in
-            
+            self.frame = CGRect(x: 0, y: 0, width: (self.superview?.frame.width)!, height: (self.superview?.frame.height)!)
         }
     }
     
     fileprivate func handleChanged(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: nil)
-        self.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
+        let rotationInDegree = translation.x / 20
+        let rotationalTransformation = CGAffineTransform(rotationAngle: 3.14/180 * rotationInDegree)
+        self.transform = rotationalTransformation
+        self.transform = rotationalTransformation.translatedBy(x: translation.x, y: translation.y)
     }
     
     @objc fileprivate func handlePan(sender: UIPanGestureRecognizer){
@@ -45,7 +76,7 @@ class CardView: UIView {
         case .changed:
             handleChanged(sender)
         case .ended:
-            handleEnded()
+            handleEnded(gesture: sender)
         default:
             ()
         }
