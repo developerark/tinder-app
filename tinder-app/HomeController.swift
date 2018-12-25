@@ -8,11 +8,18 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeController: UIViewController {
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let  buttonsStackView = HomeBottomControllStackView()
+    
+    let users = [
+        
+        User(name: "Kelly", age: 23, profession: "Teacher", imageName: "lady5c"),
+        User(name: "Jane", age: 18, profession: "Receptionist", imageName: "lady4c")
+        
+                ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,13 +32,21 @@ class ViewController: UIViewController {
     
     // MARK:- Cards
     func setupDummyCards(){
-        let cardView = CardView()
-        self.cardsDeckView.addSubview(cardView)
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.leftAnchor.constraint(equalTo: (cardView.superview?.leftAnchor)!, constant: 0).isActive = true
-        cardView.topAnchor.constraint(equalTo: (cardView.superview?.topAnchor)!, constant: 0).isActive = true
-        cardView.rightAnchor.constraint(equalTo: (cardView.superview?.rightAnchor)!, constant: 0).isActive = true
-        cardView.bottomAnchor.constraint(equalTo: (cardView.superview?.bottomAnchor)!, constant: 0).isActive = true
+        for user in self.users{
+            let cardView = CardView()
+            cardView.imageView.image = UIImage(named: user.imageName)
+            self.cardsDeckView.addSubview(cardView)
+            let attributedText = NSMutableAttributedString(string: user.name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
+            attributedText.append(NSAttributedString(string: "   \(user.age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
+            attributedText.append(NSAttributedString(string: "\n\(user.profession)", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .medium)]))
+            cardView.informationLabel.attributedText = attributedText
+            
+            cardView.translatesAutoresizingMaskIntoConstraints = false
+            cardView.leftAnchor.constraint(equalTo: (cardView.superview?.leftAnchor)!, constant: 0).isActive = true
+            cardView.topAnchor.constraint(equalTo: (cardView.superview?.topAnchor)!, constant: 0).isActive = true
+            cardView.rightAnchor.constraint(equalTo: (cardView.superview?.rightAnchor)!, constant: 0).isActive = true
+            cardView.bottomAnchor.constraint(equalTo: (cardView.superview?.bottomAnchor)!, constant: 0).isActive = true
+        }
     }
 
     // MARK:- Layout Setup
