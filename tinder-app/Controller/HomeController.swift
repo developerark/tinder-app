@@ -14,12 +14,10 @@ class HomeController: UIViewController {
     let cardsDeckView = UIView()
     let  buttonsStackView = HomeBottomControllStackView()
     
-    let users = [
-        
-        User(name: "Kelly", age: 23, profession: "Teacher", imageName: "lady5c"),
-        User(name: "Jane", age: 18, profession: "Receptionist", imageName: "lady4c")
-        
-                ]
+    let cardViewModels = [
+        User(name: "Kelly", age: 23, profession: "Teacher", imageName: "lady5c").toCardViewModel(),
+        User(name: "Jane", age: 18, profession: "Receptionist", imageName: "lady4c").toCardViewModel()
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,14 +30,12 @@ class HomeController: UIViewController {
     
     // MARK:- Cards
     func setupDummyCards(){
-        for user in self.users{
+        for cardViewModel in self.cardViewModels{
             let cardView = CardView()
-            cardView.imageView.image = UIImage(named: user.imageName)
-            self.cardsDeckView.addSubview(cardView)
-            let attributedText = NSMutableAttributedString(string: user.name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
-            attributedText.append(NSAttributedString(string: "   \(user.age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
-            attributedText.append(NSAttributedString(string: "\n\(user.profession)", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .medium)]))
-            cardView.informationLabel.attributedText = attributedText
+            cardView.imageView.image = UIImage(named: cardViewModel.imageName)
+            cardView.informationLabel.attributedText = cardViewModel.attributedString
+            cardView.informationLabel.textAlignment = cardViewModel.textAlignment
+            cardsDeckView.addSubview(cardView)
             
             cardView.translatesAutoresizingMaskIntoConstraints = false
             cardView.leftAnchor.constraint(equalTo: (cardView.superview?.leftAnchor)!, constant: 0).isActive = true
