@@ -8,7 +8,8 @@
 
 import UIKit
 
-struct User {
+struct User: ProducesCardViewModel {
+    
     // Define the properties for the User Data Model
     let name: String
     let age: Int
@@ -19,6 +20,8 @@ struct User {
         let attributedText = NSMutableAttributedString(string: self.name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
         attributedText.append(NSAttributedString(string: "   \(self.age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
         attributedText.append(NSAttributedString(string: "\n\(self.profession)", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .medium)]))
-        return CardViewModel(imageName: "lady5c", attributedString: attributedText, textAlignment: .left)
+        return CardViewModel(imageName: self.imageName, attributedString: attributedText, textAlignment: .left)
     }
+    
+
 }

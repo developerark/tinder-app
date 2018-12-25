@@ -9,9 +9,16 @@
 import UIKit
 
 class CardView: UIView {
+    var cardViewModel: CardViewModel!{
+        didSet{
+            self.imageView.image = UIImage(named: cardViewModel.imageName)
+            informationLabel.attributedText = cardViewModel.attributedString
+            informationLabel.textAlignment = cardViewModel.textAlignment
+        }
+    }
     
-    let imageView = UIImageView(image: #imageLiteral(resourceName: "lady5c"))
-    public let informationLabel: UILabel = {
+    fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "lady5c"))
+    fileprivate let informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MY LABEL"
@@ -43,8 +50,8 @@ class CardView: UIView {
         self.addSubview(self.informationLabel)
         self.informationLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         self.informationLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 10).isActive = true
+        self.informationLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         self.informationLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        self.informationLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
     }
     
 

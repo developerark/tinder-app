@@ -14,10 +14,14 @@ class HomeController: UIViewController {
     let cardsDeckView = UIView()
     let  buttonsStackView = HomeBottomControllStackView()
     
-    let cardViewModels = [
-        User(name: "Kelly", age: 23, profession: "Teacher", imageName: "lady5c").toCardViewModel(),
-        User(name: "Jane", age: 18, profession: "Receptionist", imageName: "lady4c").toCardViewModel()
-    ]
+    let cardViewModels: [CardViewModel] = {
+        let producers = [
+            User(name: "Kelly", age: 23, profession: "Teacher", imageName: "lady5c"),
+            User(name: "Jane", age: 18, profession: "Receptionist", imageName: "lady4c"),
+            Advertiser(title: "OSX Mojave", brandName: "Apple", posterPhotoName: "mojave")
+        ] as [ProducesCardViewModel]
+        return producers.map({return $0.toCardViewModel()})
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +36,7 @@ class HomeController: UIViewController {
     func setupDummyCards(){
         for cardViewModel in self.cardViewModels{
             let cardView = CardView()
-            cardView.imageView.image = UIImage(named: cardViewModel.imageName)
-            cardView.informationLabel.attributedText = cardViewModel.attributedString
-            cardView.informationLabel.textAlignment = cardViewModel.textAlignment
+            cardView.cardViewModel = cardViewModel
             cardsDeckView.addSubview(cardView)
             
             cardView.translatesAutoresizingMaskIntoConstraints = false
