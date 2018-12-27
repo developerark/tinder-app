@@ -31,8 +31,7 @@ class CardView: UIView {
     // MARK:- Configuration
     fileprivate let threshold: CGFloat = 100
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    fileprivate func setupLayout() {
         // Custom Drawing code
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
@@ -44,8 +43,10 @@ class CardView: UIView {
         self.imageView.rightAnchor.constraint(equalTo: (imageView.superview?.rightAnchor)!, constant: 0).isActive = true
         self.imageView.bottomAnchor.constraint(equalTo: (imageView.superview?.bottomAnchor)!, constant: 0).isActive = true
         
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(sender:)))
-        self.addGestureRecognizer(panGesture)
+        
+        
+        // Add a gratient layer
+        self.setupGradientLayer()
         
         self.addSubview(self.informationLabel)
         self.informationLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
@@ -54,6 +55,23 @@ class CardView: UIView {
         self.informationLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayout()
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(sender:)))
+        self.addGestureRecognizer(panGesture)
+    }
+    
+    fileprivate let gradientLayer = CAGradientLayer()
+    
+    func setupGradientLayer(){
+        // Draw the gradient
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradientLayer.locations = [0.5, 1.1]
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: 300, height: 400)
+        self.layer.addSublayer(gradientLayer)
+    }
 
     enum DismissDirection{
         case right
@@ -99,6 +117,11 @@ class CardView: UIView {
     
     @objc fileprivate func handlePan(sender: UIPanGestureRecognizer){
         switch sender.state {
+        case .began:
+            // Remove all animation of drag start
+            superview?.subviews.forEach({ (subview) in
+                subview.layer.removeAllAnimations()
+            })
         case .changed:
             handleChanged(sender)
         case .ended:
@@ -110,5 +133,9 @@ class CardView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        gradientLayer.frame = self.frame
     }
 }
