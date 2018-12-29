@@ -26,10 +26,14 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-
+        self.topStackView.settingButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         self.setupLayout()
         
         self.setupDummyCards()
+    }
+    
+    @objc func settingsButtonPressed(){
+        self.present(RegistrationController(), animated: true, completion: nil)
     }
     
     // MARK:- Cards
