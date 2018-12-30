@@ -17,6 +17,7 @@
 		0A54EA1921D5790800F4253A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A54EA1821D5790800F4253A /* Assets.xcassets */; };
 		0AAB22B721D7EC5A0079022B /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB22B621D7EC5A0079022B /* RegistrationController.swift */; };
 		0AAB22B921D7F4BB0079022B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB22B821D7F4BB0079022B /* CustomTextField.swift */; };
+		0AAB22BB21D965110079022B /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB22BA21D965110079022B /* RegistrationViewModel.swift */; };
 		0AFB6A0021C1E5DC0077F8CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFB69FF21C1E5DC0077F8CB /* AppDelegate.swift */; };
 		0AFB6A0A21C1E5DE0077F8CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AFB6A0821C1E5DE0077F8CB /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -32,6 +33,7 @@
 		0A54EA1821D5790800F4253A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0AAB22B621D7EC5A0079022B /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		0AAB22B821D7F4BB0079022B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		0AAB22BA21D965110079022B /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		0AFB69FC21C1E5DC0077F8CB /* tinder-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tinder-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AFB69FF21C1E5DC0077F8CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0AFB6A0921C1E5DE0077F8CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			children = (
 				0A54EA0021CFE68600F4253A /* HomeController.swift */,
 				0AAB22B621D7EC5A0079022B /* RegistrationController.swift */,
+				0AAB22BA21D965110079022B /* RegistrationViewModel.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A54EA0121CFE68600F4253A /* HomeController.swift in Sources */,
+				0AAB22BB21D965110079022B /* RegistrationViewModel.swift in Sources */,
 				0AAB22B721D7EC5A0079022B /* RegistrationController.swift in Sources */,
 				0A54EA0421CFE9BD00F4253A /* HomeBottomControlStackView.swift in Sources */,
 				0A54EA0F21D25DCF00F4253A /* User.swift in Sources */,

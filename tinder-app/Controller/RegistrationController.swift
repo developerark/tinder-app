@@ -27,6 +27,7 @@ class RegistrationController: UIViewController {
         tf.placeholder = "Enter full name"
         tf.backgroundColor = .white
         tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        tf.addTarget(self, action: #selector(handleTextChanged(sender:)), for: .editingChanged)
         return tf
     }()
     
@@ -34,6 +35,7 @@ class RegistrationController: UIViewController {
         let tf = CustomTextField(padding: 24)
         tf.placeholder = "Enter email"
         tf.backgroundColor = .white
+        tf.addTarget(self, action: #selector(handleTextChanged(sender:)), for: .editingChanged)
         return tf
     }()
     
@@ -42,6 +44,7 @@ class RegistrationController: UIViewController {
         tf.placeholder = "Enter password"
         tf.isSecureTextEntry = true
         tf.backgroundColor = .white
+        tf.addTarget(self, action: #selector(handleTextChanged(sender:)), for: .editingChanged)
         return tf
     }()
     
@@ -49,12 +52,26 @@ class RegistrationController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Register", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .regular)
-        button.backgroundColor = #colorLiteral(red: 0.8132490516, green: 0.09731306881, blue: 0.3328936398, alpha: 1)
+        button.backgroundColor = .lightGray
+        //button.backgroundColor = #colorLiteral(red: 0.8132490516, green: 0.09731306881, blue: 0.3328936398, alpha: 1)
+        button.setTitleColor(.gray, for: .disabled)
+        button.isEnabled = false
         button.setTitleColor(.white, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true // Dont specify .fillEqually for distribution for custom height
         button.layer.cornerRadius = 25
         return button
     }()
+    
+    @objc fileprivate func handleTextChanged(sender: UITextField){
+        if sender == fullNameTextField{
+            registrationViewModel.fullName = sender.text
+        }else if sender == emailTextField{
+            registrationViewModel.email = sender.text
+            
+        }else {
+            registrationViewModel.password = sender.text
+        }
+    }
     
     lazy var verticalStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [
@@ -100,6 +117,21 @@ class RegistrationController: UIViewController {
         self.setupNotificationObservers()
         
         self.setupTapGesture()
+        setupRegistrationViewModelObserver()
+    }
+    let registrationViewModel = RegistrationViewModel()
+    fileprivate func setupRegistrationViewModelObserver(){
+        self.registrationViewModel.isFormValidObserver  = { [unowned self](isFormValid) in
+            print(isFormValid)
+            self.registerButton.isEnabled = isFormValid
+            if isFormValid{
+                self.registerButton.backgroundColor = #colorLiteral(red: 0.8132490516, green: 0.09731306881, blue: 0.3328936398, alpha: 1)
+                self.registerButton.setTitleColor(.white, for: .normal)
+            }else{
+                self.registerButton.backgroundColor = .lightGray
+                self.registerButton.setTitleColor(.gray, for: .normal)
+            }
+        }
     }
     
     fileprivate func setupTapGesture(){
