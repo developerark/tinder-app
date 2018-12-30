@@ -56,18 +56,69 @@ class RegistrationController: UIViewController {
         return button
     }()
     
+    lazy var stackView = UIStackView(arrangedSubviews: [self.selectPhotoButton, self.fullNameTextField, self.emailTextField, self.passwordTextField, self.registerButton])
+    
+    
+    fileprivate func setupLayout() {
+        self.stackView.axis = .vertical
+        self.stackView.spacing = 8
+        self.stackView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(stackView)
+        self.stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive = true
+        self.stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50).isActive = true
+        self.stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupGradientLayer()
-        let stackView = UIStackView(arrangedSubviews: [self.selectPhotoButton, self.fullNameTextField, self.emailTextField, self.passwordTextField, self.registerButton])
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(stackView)
-        stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        setupLayout()
+        self.setupNotificationObservers()
+        
+        self.setupTapGesture()
+    }
     
+    fileprivate func setupTapGesture(){
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss(sender:))))
+    }
+    
+    @objc func handleTapDismiss(sender: UITapGestureRecognizer){
+        self.view.endEditing(true)
+        
+    }
+    
+    func setupNotificationObservers(){
+        // Showing keyboard notification
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        // Hiding keyboard notification
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)         // Avoiding retain cycle
+    }
+    
+    @objc fileprivate func handleKeyboardHide(sender: Notification){
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.transform = .identity
+        }, completion: nil)
+        
+    }
+    
+    
+    
+    @objc fileprivate func handleKeyboardShow(sender: Notification){
+        guard let value = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
+        let keyboardFrame = value.cgRectValue
+        print(keyboardFrame)
+        
+        // gap from bottom of register bottom to bottom of screen
+        let bottomSpace = view.frame.height - self.stackView.frame.origin.y - self.stackView.frame.height
+        let difference = keyboardFrame.height - bottomSpace
+        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
         
     }
     
